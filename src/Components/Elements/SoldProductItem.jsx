@@ -47,7 +47,7 @@ const SoldProductItem = ({
 
     hideLoading,
     showLoading,
-    searchInputRef,
+    focusSearchInput
 
   } = useContext(SelectedOptionsContext);
   const {
@@ -76,9 +76,7 @@ const SoldProductItem = ({
     }
     changeQuantity(newQuantity)
 
-    // setTimeout(() => {
-    //   searchInputRef.current.focus()
-    // }, 500);
+    // focusSearchInput()
   }
 
 
@@ -86,26 +84,21 @@ const SoldProductItem = ({
     const newQuantity = parseInt(product.quantity - 1);
     if (newQuantity < 1) return
     changeQuantity(newQuantity)
-    setTimeout(() => {
-      searchInputRef.current.focus()
-    }, 500);
+    focusSearchInput()
   }
 
   const addQuantity = () => {
+    console.log("product", product)
     const newQuantity = parseInt(product.quantity + 1);
     changeQuantity(newQuantity)
 
-    setTimeout(() => {
-      searchInputRef.current.focus()
-    }, 500);
+    focusSearchInput()
   }
 
   const confirmarEliminar = () => {
     removeFromSalesData(itemIndex)
     showMessage("Eliminado " + salesData[itemIndex].description)
-    setTimeout(() => {
-      searchInputRef.current.focus()
-    }, 500);
+    focusSearchInput()
   }
 
   const handleRemoveFromSalesData = () => {
@@ -129,9 +122,7 @@ const SoldProductItem = ({
       }
 
     }, () => {
-      setTimeout(() => {
-        searchInputRef.current.focus()
-      }, 500);
+      focusSearchInput()
     })
   }
 
@@ -151,9 +142,7 @@ const SoldProductItem = ({
       }
     })
 
-    setTimeout(() => {
-      searchInputRef.current.focus()
-    }, 500);
+    focusSearchInput()
 
   }
 
@@ -193,9 +182,7 @@ const SoldProductItem = ({
               openDialog={showTecladoQuantity}
               setOpenDialog={(v) => {
                 if (!v) {
-                  setTimeout(() => {
-                    searchInputRef.current.focus()
-                  }, 500);
+                  focusSearchInput()
                 }
                 setShowTecladoQuantity(v)
               }}
@@ -399,9 +386,27 @@ const SoldProductItem = ({
           )}
 
         </TableCell>
-        <TableCell sx={{ fontSize: "20px" }}>${System.formatMonedaLocal(product.price, false)}</TableCell>
+        <TableCell sx={{ fontSize: "20px" }}>
+          ${System.formatMonedaLocal(product.price, false)}
+          <br />
+          <p style={{
+            fontSize: "15px"
+          }}>
+            {product.tieneExtraAgregar() && (
+              "+$" + System.formatMonedaLocal(product.montoExtrasUnitario(), false)
+            )}
+          </p>
+        </TableCell>
         <TableCell sx={{ fontSize: "20px" }}>
           ${System.formatMonedaLocal(product.total, false)}
+          <br />
+          <p style={{
+            fontSize: "15px"
+          }}>
+            {product.tieneExtraAgregar() && (
+              "+$" + System.formatMonedaLocal(product.montoExtrasSubtotal(), false)
+            )}
+          </p>
         </TableCell>
 
         {canDelete && (

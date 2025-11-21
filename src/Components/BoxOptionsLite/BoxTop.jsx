@@ -31,6 +31,7 @@ import Product from "../../Models/Product";
 import SalesOffline from "../../Models/SalesOffline";
 import IconButtonBadge from "../Elements/IconButtonBadge";
 import AdminApp from "../ScreenDialog/AdminApp";
+import AdmPedidosProgramadosApp from "../ScreenDialog/AdmPedidosProgramadosApp";
 
 const BoxTop = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -73,6 +74,12 @@ const BoxTop = () => {
 
   const [widthPrinter, setWidthPrinter] = useState(null);
   const [stockCriticoSuperados, setStockCriticoSuperados] = useState(0);
+  const [showAdmPedidosProgramados, setShowAdmPedidosProgramados] = useState(false);
+
+
+  const focusSearchInput = () => {
+    System.intentarFoco(searchInputRef)
+  }
 
   const cargarStockCriticoSuperados = () => {
     var superados = 0
@@ -163,16 +170,12 @@ const BoxTop = () => {
     Product.getInstance().almacenarParaOffline((prods, resp) => {
       hideLoading()
       showAlert("Actualizado correctamente", "", () => {
-        setTimeout(() => {
-          searchInputRef.current.focus()
-        }, 500);
+        focusSearchInput()
       })
     }, () => {
       hideLoading()
       showMessage("No se pudo realizar")
-      setTimeout(() => {
-        searchInputRef.current.focus()
-      }, 500);
+      focusSearchInput()
     })
   }
 
@@ -265,9 +268,7 @@ const BoxTop = () => {
                     position: "relative"
                   }} onClick={() => {
                     showAlert("Impresora de " + widthPrinter, "", () => {
-                      setTimeout(() => {
-                        searchInputRef.current.focus()
-                      }, 500);
+                      focusSearchInput()
                     })
 
                   }}>
@@ -292,9 +293,16 @@ const BoxTop = () => {
                   setShowSalesOffline(v)
 
                   if (!v) {
-                    setTimeout(() => {
-                      searchInputRef.current.focus()
-                    }, 500);
+                    focusSearchInput()
+                  }
+                }}
+              />
+              <AdmPedidosProgramadosApp
+                openDialog={showAdmPedidosProgramados}
+                setOpenDialog={(v) => {
+                  setShowAdmPedidosProgramados(v)
+                  if (!v) {
+                    focusSearchInput()
                   }
                 }}
               />
@@ -304,9 +312,7 @@ const BoxTop = () => {
                   setShowAdminApp(v)
 
                   if (!v) {
-                    setTimeout(() => {
-                      searchInputRef.current.focus()
-                    }, 500);
+                    focusSearchInput()
                   }
                 }}
               />
@@ -316,9 +322,7 @@ const BoxTop = () => {
                 setOpenDialog={(x) => {
                   setShowCritics(x)
                   if (!x) {
-                    setTimeout(() => {
-                      searchInputRef.current.focus()
-                    }, 500);
+                    focusSearchInput()
                   }
                 }}
               />
@@ -354,19 +358,26 @@ const BoxTop = () => {
 
                   <IconButtonBadge
                     actionButton={() => {
+                      setShowAdmPedidosProgramados(true)
+                    }}
+                    icon={<MobileFriendly fontSize="medium" />}
+                    style={{
+                      color: "#ccc"
+                    }}
+                  />
+                  <IconButtonBadge
+                    actionButton={() => {
                       setShowAdminApp(true)
                     }}
                     icon={<MobileFriendly fontSize="medium" />}
                     style={{
-                      color: "rgb(251 219 18)"
+                      color: "#fbdb12"
                     }}
                   />
                   <IconButtonBadge
                     actionButton={() => {
                       descargarProductos()
-                      setTimeout(() => {
-                        searchInputRef.current.focus()
-                      }, 500);
+                      focusSearchInput()
                     }}
                     icon={<Autorenew fontSize="medium" />}
                     style={{
@@ -382,9 +393,7 @@ const BoxTop = () => {
                       txt += " y las incorrectas " + conexionesMalInternet + "."
 
                       showAlert("Estado de conexiones a internet", txt, () => {
-                        setTimeout(() => {
-                          searchInputRef.current.focus()
-                        }, 500);
+                        focusSearchInput()
                       })
                     }}
                     icon={<Circle fontSize="medium" />}

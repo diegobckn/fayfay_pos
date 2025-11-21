@@ -36,6 +36,11 @@ class Balanza extends Singleton {
 
   onChangeFn = null
 
+  static onNeedReconect = () => { }
+
+  static detectandoConexion = false
+  static primeraConexion = false
+
   constructor() {
     super()
     this.sesion = new StorageSesion("balanza");
@@ -57,42 +62,28 @@ class Balanza extends Singleton {
     console.log("Balanza.deteccionPeso()")
 
     this.iniciarCiclo()
-
-    // this.socket = new WebSocket(ModelConfig.get("urlServicioDeteccionPeso"));
-    // this.socket.onopen = () => {
-    //   console.log("Conectado al servidor WebSocket");
-    //   if (me.socket && me.socket.readyState === WebSocket.OPEN) me.socket.send(' '); // Envía un mensaje para mantener la conexión viva
-
-    // };
-
-    // this.socket.onmessage = (event) => {
-    //   console.log("Mensaje recibido:", event.data);
-    //   me.onChangeFn(event.data);
-    //   this.ultimoPesoDetectado = event.data
-    // };
-
-    // this.socket.onerror = (error) => {
-    //   console.error(" Error en WebSocket:", error);
-    // };
-
-    // this.socket.onclose = (event) => {
-    //   console.log(" Conexión WebSocket cerrada");
-    //   console.warn('Codigo de conexión cerrada:', event.code);
-    //   console.warn('Motivo de conexión cerrada:', event.reason);
-    // };
-
   }
 
   iniciarCiclo() {
     console.log("iniciarCiclo")
     var me = Balanza.getInstance();
-    if (me.ciclando) return
+    if (me.ciclando && this.cicloVa < 10) return
     me.cicloVa = 0
     me.ciclando = true
     me.interval = setInterval(() => { me.ciclar() }, me.ciclarTiempo);
   }
   ciclar() {
     var me = Balanza.getInstance();
+
+    if (me.cicloVa > 10) {
+      me.cancelarCiclo()
+    }
+    if (me.cicloVa == 1 && Balanza.detectandoConexion) {
+      Balanza.detectandoConexion = false
+      console.log("Balanza.detectandoConexion = false")
+      me.cancelarCiclo()
+      return
+    }
     const now = dayjs().format("ss")
     if (me.terminoAnterior !== null && !me.terminoAnterior) {
       if (parseInt(now) - parseInt(this.ultimoCheck) > 3) {
@@ -106,6 +97,8 @@ class Balanza extends Singleton {
     console.log("ciclando.. va", me.cicloVa)
     console.log("ciclando..", dayjs().format("ss"))
     console.log("ciclando.. me", me)
+    console.log('Balanza.detectandoConexion', Balanza.detectandoConexion);
+
 
     if (me.ultimoCheck == now) {
       if (me.pasoElPrimero) return
@@ -150,23 +143,34 @@ class Balanza extends Singleton {
       me.socket = new WebSocket(ModelConfig.get("urlServicioDeteccionPeso"));
       me.socket.onopen = () => {
         console.log("Conectado al servidor WebSocket");
+        Balanza.primeraConexion = true
         if (me.socket && me.socket.readyState === WebSocket.OPEN) me.socket.send(' '); // Envía un mensaje para mantener la conexión viva
         setTimeout(() => { me.terminoAnterior = true; }, me.ciclarTiempo);
       };
 
       me.socket.onmessage = (event: any) => {
-        console.log("Mensaje recibido:", event.data);
-        me.onChangeFn(event.data);
-        me.ultimoPesoDetectado = event.data
-        setTimeout(() => { me.terminoAnterior = true; }, me.ciclarTiempo);
+
+        const formatResponse = JSON.parse(event.data)
+        console.log("Mensaje recibido:", formatResponse);
+        if (formatResponse.status) {
+          me.onChangeFn(formatResponse.info);
+          me.ultimoPesoDetectado = formatResponse.info
+          setTimeout(() => { me.terminoAnterior = true; }, me.ciclarTiempo);
+        } else {
+          Balanza.onNeedReconect()
+        }
       };
 
       me.socket.onerror = (error: any) => {
+        if (Balanza.primeraConexion == false) {
+          Balanza.onNeedReconect()
+        }
         console.error(" Error en WebSocket:", error);
         setTimeout(() => { me.terminoAnterior = true; }, me.ciclarTiempo);
       };
 
       me.socket.onclose = (event: any) => {
+
         console.log(" Conexión WebSocket cerrada");
         console.warn('Codigo de conexión cerrada:', event.code);
         console.warn('Motivo de conexión cerrada:', event.reason);

@@ -62,7 +62,6 @@ const BoxAdminApp = ({
     showConfirm,
     showMessage,
     showAlert,
-    searchInputRef,
 
     suspenderYRecuperar,
     listSalesOffline,

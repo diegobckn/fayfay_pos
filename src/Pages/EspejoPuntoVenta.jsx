@@ -34,7 +34,6 @@ import dayjs from "dayjs";
 const EspejoPuntoVenta = () => {
   const {
     userData,
-    searchInputRef,
     showAlert,
     sales,
     setSalesData,
@@ -55,7 +54,6 @@ const EspejoPuntoVenta = () => {
   // }, [userData])
 
   useEffect(() => {
-    // System.intentarFoco(searchInputRef)
 
     UserEvent.send({
       name: "carga pantalla espejo",

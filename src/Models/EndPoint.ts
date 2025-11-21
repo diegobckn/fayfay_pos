@@ -11,7 +11,7 @@ import SoporteTicket from './SoporteTicket.ts';
 
 class EndPoint extends Singleton {
 
-  static admError(error, callbackWrong) {
+  static admError(error:any, callbackWrong:any) {
     if (SoporteTicket.reportarError) console.log("admError", error)
     if (SoporteTicket.reportarError) console.log("admError2", callbackWrong)
     SoporteTicket.catchRequestError(error)
@@ -33,7 +33,7 @@ class EndPoint extends Singleton {
     }
   }
 
-  static async sendGet(url, callbackOk, callbackWrong) {
+  static async sendGet(url:string, callbackOk:any, callbackWrong:any) {
     try {
       const response = await axios.get(url);
       if (response.data.statusCode === 200 || response.data.statusCode === 201) {
@@ -51,7 +51,7 @@ class EndPoint extends Singleton {
   }
 
 
-  static async sendPost(url, data, callbackOk, callbackWrong, headers: any = undefined) {
+  static async sendPost(url:string, data:any, callbackOk:any, callbackWrong:any, headers: any = undefined) {
     try {
       const response = await axios.post(url, data, headers);
 
@@ -70,7 +70,7 @@ class EndPoint extends Singleton {
     }
   }
 
-  static async sendPut(url, data, callbackOk, callbackWrong) {
+  static async sendPut(url:string, data:any, callbackOk:any, callbackWrong:any) {
     try {
       const response = await axios.put(url, data);
       if (response.data.statusCode === 200 || response.data.statusCode === 201) {
@@ -84,7 +84,7 @@ class EndPoint extends Singleton {
     }
   }
 
-  static async sendDelete(url, data, callbackOk, callbackWrong) {
+  static async sendDelete(url:string, data:any, callbackOk:any, callbackWrong:any) {
     try {
       const response = await axios.delete(url, data);
       if (response.data.statusCode === 200 || response.data.statusCode === 201) {

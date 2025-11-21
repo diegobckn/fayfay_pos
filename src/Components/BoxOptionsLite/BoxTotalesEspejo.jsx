@@ -68,7 +68,6 @@ const BoxTotalesEspejo = () => {
 
     ultimoVuelto,
     setUltimoVuelto,
-    searchInputRef
   } = useContext(SelectedOptionsContext);
 
   const [vendedor, setVendedor] = useState(null);

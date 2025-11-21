@@ -44,7 +44,7 @@ import ProductCodeStack from "../../Models/ProductCodeStack";
 import Balanza from "../../Models/Balanza";
 import BalanzaUnidad from "../../Models/BalanzaUnidad";
 import dayjs from "dayjs";
-import { OrdenListado } from "../../definitions/BaseConfig";
+import OrdenListado from "../../definitions/OrdenesListado";
 
 const BoxProducts = ({ }) => {
   const {
@@ -84,6 +84,10 @@ const BoxProducts = ({ }) => {
 
   const [paginaBusqueda, setPaginaBusqueda] = useState(0);
   const [cantidadPaginasBusqueda, setCantidadPaginasBusqueda] = useState(0);
+
+  const focusSearchInput = () => {
+    System.intentarFoco(searchInputRef)
+  }
 
   useEffect(() => {
     if (textSearchProducts.trim() == "") {
@@ -145,11 +149,7 @@ const BoxProducts = ({ }) => {
                 // setProductByCodigo(productoEncontrado);
               } else {
                 showMessage("Producto No encontrado");
-                showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo '" + parte + "' ?", () => {
-                  addNewProductFromCode(parte)
-                }, () => {
-
-                })
+                procesarNoEncontrado(parte)
               }
 
               hideLoading()
@@ -162,21 +162,14 @@ const BoxProducts = ({ }) => {
           } else {
             //codigo no coincide con codigo de balanza configurado
             showMessage("Producto No encontrado");
-            showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo '" + parte + "' ?", () => {
-              addNewProductFromCode(parte)
-            }, () => {
-
-            })
+            procesarNoEncontrado(parte)
           }
 
 
         })
       } else {
         showMessage("Producto No encontrado");
-        showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo ' " + codigoBusqueda + " ' ?", () => {
-          addNewProductFromCode(codigoBusqueda)
-        }, () => {
-        })
+        procesarNoEncontrado(codigoBusqueda)
       }
 
       hideLoading()
@@ -185,8 +178,14 @@ const BoxProducts = ({ }) => {
       return
     } else {
       showMessage("Producto No encontrado");
-      showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo ' " + codigoBusqueda + " ' ?", () => {
-        addNewProductFromCode(codigoBusqueda)
+      procesarNoEncontrado(codigoBusqueda)
+    }
+  }
+
+  const procesarNoEncontrado = (codigoNoEncontrado) => {
+    if (ModelConfig.get("crearProductoNoEncontrado")) {
+      showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo ' " + codigoNoEncontrado + " ' ?", () => {
+        addNewProductFromCode(codigoNoEncontrado)
       }, () => {
       })
     }
@@ -248,11 +247,7 @@ const BoxProducts = ({ }) => {
                 // setProductByCodigo(productoEncontrado);
               } else {
                 showMessage("Producto No encontrado");
-                showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo '" + parte + "' ?", () => {
-                  addNewProductFromCode(parte)
-                }, () => {
-
-                })
+                procesarNoEncontrado(parte)
               }
 
               hideLoading()
@@ -272,10 +267,7 @@ const BoxProducts = ({ }) => {
         })
       } else {
         showMessage("Producto No encontrado");
-        showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo ' " + codigoBusqueda + " ' ?", () => {
-          addNewProductFromCode(codigoBusqueda)
-        }, () => {
-        })
+        procesarNoEncontrado(codigoBusqueda)
       }
 
       hideLoading()
@@ -284,10 +276,7 @@ const BoxProducts = ({ }) => {
       return
     } else {
       showMessage("Producto No encontrado");
-      showConfirm("Producto No encontrado, desea agregar un nuevo producto con el codigo ' " + codigoBusqueda + " ' ?", () => {
-        addNewProductFromCode(codigoBusqueda)
-      }, () => {
-      })
+      procesarNoEncontrado(codigoBusqueda)
     }
   }
 
@@ -314,7 +303,7 @@ const BoxProducts = ({ }) => {
         // setProductByCodigo(productoEncontrado);
         // setTextSearchProducts("");
         setShowTecladoBuscar(false)
-        searchInputRef.current.focus()
+        focusSearchInput()
       } else {
 
         buscarValoresBalanza(codigoBusqueda)
@@ -649,7 +638,7 @@ const BoxProducts = ({ }) => {
     setTextSearchProducts("")
     setShowTecladoBuscar(false)
 
-    searchInputRef.current.focus()
+    focusSearchInput()
   };
 
 
@@ -736,6 +725,9 @@ const BoxProducts = ({ }) => {
             <div style={{ display: "flex" }}>
               <Grid item xs={12} md={12} lg={12} sx={{ margin: "1px" }}>
                 <TextField
+                  inputProps={{
+                    "data-id": "searchinput"
+                  }}
                   sx={{
                     backgroundColor: "white",
                     borderRadius: "5px",

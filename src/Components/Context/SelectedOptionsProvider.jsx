@@ -98,6 +98,10 @@ export const SelectedOptionsProvider = ({ children }) => {
 
   const searchInputRef = useRef(null)
 
+  const focusSearchInput = () => {
+    System.intentarFoco(searchInputRef)
+  }
+
   //set general dialog variables
   const [showLoadingDialog, setShowLoadingDialogx] = useState(false)
   const [loadingDialogText, setLoadingDialogText] = useState("")
@@ -291,7 +295,7 @@ export const SelectedOptionsProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("cliente", cliente)
+    // console.log("cliente", cliente)
     setClienteModal(null)
     if (cliente) {
       if (cliente.validacionFactura && cliente.validacionFactura.esValidoFactura) {
@@ -396,9 +400,7 @@ export const SelectedOptionsProvider = ({ children }) => {
           name: "agrega producto " + product.nombre,
         })
 
-        setTimeout(() => {
-          searchInputRef.current.focus()
-        }, 500);
+        focusSearchInput()
       }
     }
   };
@@ -495,9 +497,7 @@ export const SelectedOptionsProvider = ({ children }) => {
     })
     setSalesData(sales.removeFromIndex(index));
 
-    setTimeout(() => {
-      searchInputRef.current.focus()
-    }, 500);
+    focusSearchInput()
   };
 
 
@@ -622,6 +622,8 @@ export const SelectedOptionsProvider = ({ children }) => {
 
         textSearchProducts,
         searchInputRef,
+        focusSearchInput,
+        
         setTextSearchProducts,
         buscarCodigoProducto,
         setBuscarCodigoProducto,

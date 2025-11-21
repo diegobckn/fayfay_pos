@@ -54,7 +54,7 @@ import SmallWarningButton from "../Elements/SmallWarningButton";
 import SmallSuccessButton from "../Elements/SmallSuccessButton";
 
 
-const BoxAdminAppPedidos = ({
+export default ({
   pedidos,
   setPedidos,
   visible
@@ -72,7 +72,6 @@ const BoxAdminAppPedidos = ({
     showConfirm,
     showMessage,
     showAlert,
-    searchInputRef,
 
     suspenderYRecuperar,
     listSalesOffline,
@@ -145,6 +144,7 @@ const BoxAdminAppPedidos = ({
   }
 
   const imprimir = (pedido, callbackEnd = null) => {
+    console.log("imprimiendo", pedido)
     Atudepa.imprimir(pedido, createQrString, userData, showAlert, showConfirm, callbackEnd)
   }
 
@@ -184,6 +184,9 @@ const BoxAdminAppPedidos = ({
       }
       setTxtNuevos(txt)
     }
+
+    Atudepa.iniciarCiclo()
+    setIniciado(true)
 
 
   }, [])
@@ -404,5 +407,3 @@ const BoxAdminAppPedidos = ({
     <></>
   );
 }
-
-export default BoxAdminAppPedidos;
