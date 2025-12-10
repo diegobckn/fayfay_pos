@@ -1,6 +1,6 @@
 const CONSTANTS =  {
     appName: "EasyPOSLite",
-    appVersion: "1.0.399",
+    appVersion: "1.0.424",
 };
 
 export default CONSTANTS;

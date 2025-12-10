@@ -153,7 +153,7 @@ class System {
 
     static intentarFoco(textInfoRef: any) {
         // console.log("..intentarFoco", textInfoRef)
-        console.log(textInfoRef)
+        // console.log(textInfoRef)
         if (!textInfoRef || textInfoRef.current == null) {
             // console.log("no tiene valor ref")
             setTimeout(() => {

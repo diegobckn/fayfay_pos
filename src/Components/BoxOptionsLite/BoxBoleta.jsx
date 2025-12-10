@@ -48,7 +48,7 @@ import ModelConfig from "../../Models/ModelConfig";
 import UserEvent from "../../Models/UserEvent";
 import Product from "../../Models/Product";
 import BoxMultiPago from "./BoxMultiPago";
-import Oferta5 from "../../Models/Oferta5";
+import Oferta1 from "../../Models/Oferta1";
 import Model from "../../Models/Model";
 import IngresarTexto from "../ScreenDialog/IngresarTexto";
 import Sales from "../../Models/Sales";
@@ -138,6 +138,7 @@ const BoxBoleta = ({
 
   useEffect(() => {
 
+    if (!openDialog) return
     PrinterPaper.getInstance().loadWidthFromSesion()
 
     const offAI = OfflineAutoIncrement.getInstance()
@@ -164,7 +165,8 @@ const BoxBoleta = ({
     }, (err) => {
     }, true);
 
-  }, [])
+    setTrabajaConComanda(ModelConfig.get("trabajarConComanda"))
+  }, [openDialog])
 
   const revisarOfertas = (ofertas) => {
     if (ofertas.length > 0) {
@@ -178,7 +180,7 @@ const BoxBoleta = ({
         // if (ofer.tipo === 5) {//temporalmente, luego activar
 
 
-        var of = new Oferta5();
+        var of = new Oferta1();
         of.setInfo(ofer)
 
 
@@ -237,23 +239,23 @@ const BoxBoleta = ({
     if (
       (modoTrabajoConexion == ModosTrabajoConexion.OFFLINE_INTENTAR_ENVIAR
         || modoTrabajoConexion == ModosTrabajoConexion.SOLO_OFFLINE)
-      && Oferta5.session.hasOne()
+      && Oferta1.session.hasOne()
     ) {
-      revisarOfertas(Oferta5.session.cargar(1))
+      revisarOfertas(Oferta1.session.cargar(1))
       return
     }
 
     Model.getOfertas((ofertas) => {
-      Oferta5.guardarOffline(ofertas)
+      Oferta1.guardarOffline(ofertas)
       revisarOfertas(ofertas)
     }, () => {
 
       if (
         (modoTrabajoConexion == ModosTrabajoConexion.OFFLINE_INTENTAR_ENVIAR
           || modoTrabajoConexion == ModosTrabajoConexion.SOLO_OFFLINE)
-        && Oferta5.session.hasOne()
+        && Oferta1.session.hasOne()
       ) {
-        revisarOfertas(Oferta5.session.cargar(1))
+        revisarOfertas(Oferta1.session.cargar(1))
       } else {
         setProductosVendidos(salesData)
         setTotalVentas(grandTotal)
@@ -272,8 +274,6 @@ const BoxBoleta = ({
     //     }
     //   })
     // }, () => { })
-
-    setTrabajaConComanda(ModelConfig.get("trabajarConComanda"))
   }
 
   // ACCIONES

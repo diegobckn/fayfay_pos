@@ -35,6 +35,7 @@ const RecuperarVenta = ({ openDialog, setOpenDialog }) => {
   } = useContext(SelectedOptionsContext);
 
   const [selectedSale, setSelectedSale] = useState(null)
+  const [deTodosLosUsuarios, setDeTodosLosUsuarios] = useState(false)
 
 
   useEffect(() => {
@@ -55,7 +56,7 @@ const RecuperarVenta = ({ openDialog, setOpenDialog }) => {
         codigoProducto: product.codProducto,
         codigoCliente: (cliente ? cliente.codigoCliente : 0)
       }, (prodsEncontrados) => {
-        prodsEncontrados[0].quantity = product.cantidad
+        prodsEncontrados[0].cantidad = product.cantidad
         prodsEncontrados[0].cantidad = product.cantidad
         addToSalesData(prodsEncontrados[0])
 
@@ -103,6 +104,7 @@ const RecuperarVenta = ({ openDialog, setOpenDialog }) => {
                 onSelect={onSelect}
                 selectedItem={selectedSale}
                 setSelectedItem={setSelectedSale}
+                deTodosLosUsuarios={deTodosLosUsuarios}
               />
             </Grid>
           </Grid>
@@ -110,6 +112,15 @@ const RecuperarVenta = ({ openDialog, setOpenDialog }) => {
         </Grid>
       </DialogContent>
       <DialogActions>
+
+        {!selectedSale && (
+          <SmallButton
+            actionButton={() => {
+              setDeTodosLosUsuarios(!deTodosLosUsuarios)
+            }}
+            textButton={deTodosLosUsuarios ? "Ver del usuario" : "Ver de todos"}
+          />
+        )}
 
         <SmallButton isDisabled={!selectedSale}
           actionButton={onConfirm}

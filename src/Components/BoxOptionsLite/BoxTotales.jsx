@@ -202,7 +202,7 @@ const BoxTotales = () => {
         codigoProducto: product.codProducto,
         codigoCliente: 0
       }, (prodsEncontrados) => {
-        prodsEncontrados[0].quantity = product.cantidad
+        prodsEncontrados[0].cantidad = product.cantidad
         prodsEncontrados[0].cantidad = product.cantidad
         addToSalesData(prodsEncontrados[0])
 
