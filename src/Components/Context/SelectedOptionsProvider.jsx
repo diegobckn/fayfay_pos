@@ -295,7 +295,7 @@ export const SelectedOptionsProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // console.log("cliente", cliente)
+    console.log("cliente", cliente)
     setClienteModal(null)
     if (cliente) {
       if (cliente.validacionFactura && cliente.validacionFactura.esValidoFactura) {

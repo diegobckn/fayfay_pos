@@ -10,6 +10,7 @@ import ParaEnviar from './ParaEnviar.ts';
 import System from '../Helpers/System.ts';
 import ModosTrabajoConexion from '../definitions/ModosConexion.ts';
 import Shop from './Shop.ts';
+import Client from './Client.ts';
 
 
 class Product extends ModelSingleton {
@@ -301,6 +302,12 @@ class Product extends ModelSingleton {
         const configs = ModelConfig.get()
         var url = configs.urlBase +
             "/api/ProductosTmp/GetProductosByCodigoBarra?codbarra=" + codigoProducto
+
+        if (!codigoCliente && Client.getInstance().sesion.hasOne()) {
+            const clt = Client.getInstance().getFromSesion()
+            console.log("clt", clt)
+            codigoCliente = clt.codigoCliente
+        }
         if (codigoCliente) {
             url += "&codigoCliente=" + codigoCliente
         }

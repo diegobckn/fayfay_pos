@@ -98,6 +98,7 @@ const BoxProducts = ({ }) => {
     handleDescripcionSearchButtonClick()
   }, [textSearchProducts]);
 
+
   const buscarValoresBalanzaVentaUnidad = (codigoBusqueda) => {
     const CODBALANZA = BalanzaUnidad.getCodigo()
     const LARGOIDPRODBALANZA = parseInt(ModelConfig.get("largoIdProdBalanzaVentaUnidad"))
@@ -142,7 +143,8 @@ const BoxProducts = ({ }) => {
             const pesoFloat = parseFloat(peso)
 
             showLoading("buscando producto " + parseInt(idProducto))
-            Product.getInstance().findByCodigoBarras({ codigoProducto: idProducto, codigoCliente: codigoCliente }, (products, response) => {
+            console.log("busca 1.. cliente", cliente)
+            Product.getInstance().findByCodigoBarras({ codigoProducto: idProducto }, (products, response) => {
               if (products.length > 0) {
                 const productoEncontrado = products[0];
                 addToSalesData(productoEncontrado, pesoFloat);
@@ -240,7 +242,9 @@ const BoxProducts = ({ }) => {
             const pesoFloat = parseFloat(pesoEntero + "." + pesoDecimal)
 
             showLoading("buscando producto " + parseInt(idProducto))
-            Product.getInstance().findByCodigoBarras({ codigoProducto: parseInt(idProducto), codigoCliente: codigoCliente }, (products, response) => {
+            console.log("busca 2.. cliente", cliente)
+
+            Product.getInstance().findByCodigoBarras({ codigoProducto: parseInt(idProducto) }, (products, response) => {
               if (products.length > 0) {
                 const productoEncontrado = products[0];
                 addToSalesData(productoEncontrado, pesoFloat);
@@ -284,9 +288,8 @@ const BoxProducts = ({ }) => {
   const procesarBusqueda = (codigoBusqueda) => {
     // console.log("procesando la busqueda", codigoBusqueda)
 
-    var codigoCliente = 0
-    if (cliente) codigoCliente = cliente.codigoCliente
-    Product.getInstance().findByCodigoBarras({ codigoProducto: codigoBusqueda, codigoCliente: codigoCliente }, (products, response) => {
+
+    Product.getInstance().findByCodigoBarras({ codigoProducto: codigoBusqueda }, (products, response) => {
       // console.log("Respuesta de la IdBYCODIGO:", response.data);
       // console.log("Cantidad registros:", response.data.cantidadRegistros);
 
@@ -466,8 +469,7 @@ const BoxProducts = ({ }) => {
 
                 setTimeout(() => {
                   Product.getInstance().findByCodigoBarras({
-                    codigoProducto: codBarra,
-                    codigoCliente: codigoCliente
+                    codigoProducto: codBarra
                   },
                     (products, response) => {
                       if (products.length > 0) {

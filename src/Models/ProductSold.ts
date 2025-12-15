@@ -4,6 +4,7 @@ import Product from './Product.ts';
 import BaseConfig from "../definitions/BaseConfig.ts";
 import System from '../Helpers/System.ts';
 import IProductSold from '../Types/IProductSold.ts';
+import Client from './Client.ts';
 
 
 class ProductSold extends Product implements IProductSold {
@@ -48,6 +49,12 @@ class ProductSold extends Product implements IProductSold {
     }
 
     getPrecioCantidad(otraCantidad = null) {
+
+        const cl = Client.getInstance()
+        if (cl.sesion.hasOne()) {
+            return this.precioVenta
+        }
+
         if (
             this.mostrarPrecioRangos
             && this.mostrarPrecioRangos.length > 0
@@ -196,7 +203,7 @@ class ProductSold extends Product implements IProductSold {
         return totalEx
     }
 
-    static createByValues(product:any){
+    static createByValues(product: any) {
         const me = new ProductSold()
         me.fill(product)
         return me;

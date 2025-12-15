@@ -53,8 +53,7 @@ const RecuperarVenta = ({ openDialog, setOpenDialog }) => {
       const product = listado.splice(0, 1)[0]
       product.idProducto = parseInt(product.codProducto)
       Product.getInstance().findByCodigoBarras({
-        codigoProducto: product.codProducto,
-        codigoCliente: (cliente ? cliente.codigoCliente : 0)
+        codigoProducto: product.codProducto
       }, (prodsEncontrados) => {
         prodsEncontrados[0].cantidad = product.cantidad
         prodsEncontrados[0].cantidad = product.cantidad

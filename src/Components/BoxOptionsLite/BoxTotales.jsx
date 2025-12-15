@@ -200,7 +200,6 @@ const BoxTotales = () => {
       product.idProducto = parseInt(product.codProducto)
       Product.getInstance().findByCodigoBarras({
         codigoProducto: product.codProducto,
-        codigoCliente: 0
       }, (prodsEncontrados) => {
         prodsEncontrados[0].cantidad = product.cantidad
         prodsEncontrados[0].cantidad = product.cantidad
