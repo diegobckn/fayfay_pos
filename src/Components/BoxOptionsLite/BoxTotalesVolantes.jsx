@@ -80,7 +80,7 @@ const BoxTotalesVolantes = () => {
   const [showFastSearchDialog, setShowFastSearchDialog] = useState(false);
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   const onTicketClick = () => {

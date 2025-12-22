@@ -262,9 +262,10 @@ class Sales {
 
   addProductExist(productNew: any, newQuantity: number, indexExist: number) {
     // console.log("parece que ya esta agregado el producto..vamos a actualizar su cantidad")
-    const cantAct = this.products[indexExist].cantidad + 0
-    const cantNue = this.products[indexExist].cantidad + newQuantity + 0
+    const cantAct = parseFloat(this.products[indexExist].cantidad + "")
+    const cantNue = parseFloat(this.products[indexExist].cantidad + "") + parseFloat(newQuantity + "")
 
+    // console.log("tipos de cantidad actual: ", typeof (cantAct), "..la nueva sera:", typeof (cantNue))
     // console.log("cantidad actual: ", cantAct, "..la nueva sera:", cantNue)
 
     const productExistente = this.products[indexExist]
@@ -283,7 +284,7 @@ class Sales {
     }
     // this.products = this.incrementQuantityByIndex(indexExist, quantity, newPrice);
     // console.log("antes de changeQuantityByIndex")
-    this.products = this.changeQuantityByIndex(indexExist, productExistente.cantidad + 1);
+    this.products = this.changeQuantityByIndex(indexExist, cantNue);
     // console.log("antes de checkQuantityEnvase")
     this.checkQuantityEnvase(indexExist, productNew)
   }
@@ -358,7 +359,7 @@ class Sales {
 
 
   addProduct(productoAAgregar: any, cantidad: number | null = null): ProductSold[] {
-    // console.log("Sales: add product de sales", product)
+    // console.log("Sales: add product de sales", productoAAgregar)
     if (!productoAAgregar.precioVenta) return this.products;
 
     if (!cantidad && productoAAgregar.cantidad) cantidad = productoAAgregar.cantidad
@@ -374,9 +375,11 @@ class Sales {
     // const existingProductIndex = this.findKeyAndPriceAndNameInProducts(product.idProducto, product.precioVenta, product.nombre)
     const existingProductIndex = this.findKeyAndPriceInProducts(productoAAgregar.idProducto, productoAAgregar.precioVenta)
 
+    // console.log("agruparProductoLinea", agruparProductoLinea)
+    // console.log("existingProductIndex", existingProductIndex)
     if (
-      agruparProductoLinea &&
-      !ProductSold.esPesable(productoAAgregar)
+      agruparProductoLinea
+      // && !ProductSold.esPesable(productoAAgregar)
       && existingProductIndex !== -1
     ) {
       this.addProductExist(productoAAgregar, cantidad, existingProductIndex)

@@ -151,6 +151,13 @@ class System {
         return allOk
     }
 
+    static darFocoEnBuscar(textInfoRef: any) {
+        console.log("darFocoEnBuscar")
+        const debe = ModelConfig.get("darFocoEnBuscar")
+        if (debe) {
+            this.intentarFoco(textInfoRef)
+        }
+    }
     static intentarFoco(textInfoRef: any) {
         // console.log("..intentarFoco", textInfoRef)
         // console.log(textInfoRef)

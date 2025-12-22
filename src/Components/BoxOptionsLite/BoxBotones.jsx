@@ -53,7 +53,7 @@ const BoxBotones = () => {
   const [showScreenCierreCaja, setShowScreenCierreCaja] = useState(false)
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   return (

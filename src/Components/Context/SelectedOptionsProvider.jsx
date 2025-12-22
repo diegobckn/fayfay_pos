@@ -99,7 +99,7 @@ export const SelectedOptionsProvider = ({ children }) => {
   const searchInputRef = useRef(null)
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   //set general dialog variables

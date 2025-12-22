@@ -86,7 +86,7 @@ const BoxProducts = ({ }) => {
   const [cantidadPaginasBusqueda, setCantidadPaginasBusqueda] = useState(0);
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   useEffect(() => {

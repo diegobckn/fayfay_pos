@@ -140,6 +140,7 @@ const TabGeneral = ({
   const [aQuienEnviaEmails, setaQuienEnviaEmails] = useState("")
 
   const [yaIngresoUnaAutorizacion, setYaIngresoUnaAutorizacion] = useState(false)
+  const [darFocoEnBuscar, setDarFocoEnBuscar] = useState(false)
 
   const buscarNombreSucursal = (idSucursal) => {
     var nombre = ""
@@ -281,6 +282,7 @@ const TabGeneral = ({
     setEnviarEmailInicioCaja(ModelConfig.get("enviarEmailInicioCaja"))
     setenviarEmailCierreCaja(ModelConfig.get("enviarEmailCierreCaja"))
     setaQuienEnviaEmails(ModelConfig.get("aQuienEnviaEmails"))
+    setDarFocoEnBuscar(ModelConfig.get("darFocoEnBuscar"))
 
   }
 
@@ -304,6 +306,7 @@ const TabGeneral = ({
       "enviarEmailInicioCaja": enviarEmailInicioCaja,
       "enviarEmailCierreCaja": enviarEmailCierreCaja,
       "aQuienEnviaEmails": aQuienEnviaEmails,
+      "darFocoEnBuscar": darFocoEnBuscar,
     }
 
     const estamosEnPantallaLogin = window.location.href.indexOf("/login") > -1
@@ -545,6 +548,12 @@ const TabGeneral = ({
         <InputCheckbox
           inputState={[descripcionAutomaticaSuspender, setDescripcionAutomaticaSuspender]}
           label={"Descripcion Automatica Suspender"}
+        />
+      </Grid>
+      <Grid item xs={12} md={12} lg={12}>
+        <InputCheckbox
+          inputState={[darFocoEnBuscar, setDarFocoEnBuscar]}
+          label={"Dar siempre foco en buscar"}
         />
       </Grid>
 

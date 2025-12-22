@@ -101,18 +101,20 @@ const BoxTotales = () => {
   const [ingresarNumeroAtencion, setIngresarNumeroAtencion] = useState(false);
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   const longBoleta = new LongClick(2);
   longBoleta.onClick(() => {
     if (salesData.length < 1) {
       showMessage("No hay ventas")
+      focusSearchInput()
       return
     }
 
     if (!System.configBoletaOk()) {
       showAlert("Se debe configurar emision de boleta")
+      focusSearchInput()
       return
     }
 
@@ -473,6 +475,7 @@ const BoxTotales = () => {
                     onClick={() => {
                       if (salesData.length < 1) {
                         showMessage("No hay ventas")
+                        focusSearchInput()
                         return
                       }
                       setShowScreenPagoFactura(true)

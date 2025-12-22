@@ -99,10 +99,12 @@ const BaseConfig = {
     sinImagen: Env.productoSinImagen + "?v=12",
 
     aQuienEnviaEmails: "",
-    
+
     enviarEmailInicioSesion: false,
     enviarEmailInicioCaja: false,
     enviarEmailCierreCaja: false,
+
+    darFocoEnBuscar: true
 
 };
 

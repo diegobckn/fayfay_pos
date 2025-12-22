@@ -106,7 +106,7 @@ const BoxBotonesVendedoresVolantes = () => {
   }, [salesData])
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   return (

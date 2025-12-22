@@ -78,7 +78,7 @@ const BoxTotales = () => {
   const [showPreventa, setShowPreventa] = useState(false)
 
   const focusSearchInput = () => {
-    System.intentarFoco(searchInputRef)
+    System.darFocoEnBuscar(searchInputRef)
   }
 
   const navigate = useNavigate();
