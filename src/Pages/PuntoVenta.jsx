@@ -38,7 +38,9 @@ const PuntoVenta = () => {
     focusSearchInput,
     showAlert,
     getUserData,
-    salesData
+    salesData,
+
+    verBotonesPanel
   } = useContext(SelectedOptionsContext);
 
 
@@ -163,15 +165,17 @@ const PuntoVenta = () => {
           padding: 0
         }}>
 
-          <Grid container style={{
-            padding: 0
-          }}>
-            <Grid item xs={12} sm={12} md={12} lg={12} style={{
+          {verBotonesPanel && (
+            <Grid container style={{
               padding: 0
             }}>
-              <BoxTop />
+              <Grid item xs={12} sm={12} md={12} lg={12} style={{
+                padding: 0
+              }}>
+                <BoxTop />
+              </Grid>
             </Grid>
-          </Grid>
+          )}
 
           <Grid container spacing={2} style={{
             margin: "0",
@@ -225,7 +229,9 @@ const PuntoVenta = () => {
             }}></div>
           )} */}
 
-          <BoxBotones />
+          {verBotonesPanel && (
+            <BoxBotones />
+          )}
 
         </Grid>
       </Container>

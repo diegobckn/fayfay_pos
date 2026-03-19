@@ -72,6 +72,13 @@ const BaseConfig = {
     urlServicioImpresion: "ws://localhost:8760",
     urlServicioImpresionComanda: "ws://localhost:8760",
 
+    urlServicioBalanzaDigi: "ws://localhost:8760",
+    ipBalanzaDigi: "192.168.1.135",
+    puertaBalanzaDigi: "2135",
+    modeloBalanzaDigi: "sm-300",
+    usuarioBalanzaDigi: "admin",
+    claveBalanzaDigi: "admin",
+
     puertoImpresiones: "COM6",
     puertoImpresionComanda: "COM6",
     zoomImpresiones: "1.2",
@@ -104,7 +111,9 @@ const BaseConfig = {
     enviarEmailInicioCaja: false,
     enviarEmailCierreCaja: false,
 
-    darFocoEnBuscar: true
+    darFocoEnBuscar: true,
+
+    trabajarConBalanzaDigi: false
 
 };
 

@@ -84,21 +84,6 @@ class Model {
     }
   }
 
-  static async getConexion(callbackOk, callbackWrong) {
-    const url = ModelConfig.get("urlBase") + "/api/Cajas/EstadoApi"
-    const reportarErrorAntes = SoporteTicket.reportarError
-    SoporteTicket.reportarError = false
-    EndPoint.sendGet(url, (responseData, response) => {
-      SoporteTicket.reportarError = reportarErrorAntes
-      callbackOk(responseData.sucursals, response)
-    }, (x) => {
-      SoporteTicket.reportarError = reportarErrorAntes
-      callbackWrong(x)
-    })
-
-
-  }
-
   static async getSupervision(data, callbackOk, callbackWrong) {
     const url = ModelConfig.get("urlBase") + "/api/Ventas/AutorizarAccion?fechaIngreso=" + data.fechaIngreso
       + "&idUsuario=" + data.idUsuario + "&CodeAutorizacion=" + data.CodeAutorizacion + "&Accion=" + data.Accion
@@ -107,16 +92,26 @@ class Model {
     }, callbackWrong)
   }
 
+  static async getComprobante(data = {
+    nroFolio,
+    codigoSucursal: null,
+    codigoCaja: null
+  }, callbackOk, callbackWrong) {
+    var url = ModelConfig.get("urlBase") + "/api/Reportes/GetHTMLComprobanteByNumComprobante"
 
-  static async getOfertas(callbackOk, callbackWrong) {
-    const url = ModelConfig.get("urlBase") + "/api/Ofertas/GetOfertas"
+    const sucursal = data.codigoSucursal ? data.codigoSucursal : ModelConfig.get("sucursal")
+    const caja = data.codigoCaja ? data.codigoCaja : ModelConfig.get("puntoVenta")
+
+    url += "?NroComprobante=" + data.nroFolio
+    url += "&codigoSucursal=" + sucursal
+    url += "&puntoVenta=" + caja
     EndPoint.sendGet(url, (responseData, response) => {
-      callbackOk(responseData.ofertas, response)
+      callbackOk(responseData, response)
     }, callbackWrong)
   }
 
 
-  static async informeInisioSesion(infoUser,callbackOk, callbackWrong) {
+  static async informeInicioSesion(infoUser, callbackOk, callbackWrong) {
     const configs = ModelConfig.get()
 
     if (!configs.enviarEmailInicioSesion) {

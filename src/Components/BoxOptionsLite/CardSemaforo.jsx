@@ -3,8 +3,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Card, CardContent, CardActions, Button, Typography } from '@mui/material';
 import Model from '../../Models/Model';
 import dayjs from 'dayjs';
+import Conexion from '../../Models/Conexion';
 
-export default function({
+export default function ({
 }) {
 
   const INTERVAL = 5 * 60 * 1000
@@ -14,49 +15,48 @@ export default function({
   const [ultimoCheck, setultimoCheck] = useState("")
 
 
-  const fetchData = async () => 
-  {
-    Model.getConexion(()=>{
+  const fetchData = async () => {
+    Conexion.getFromServer(() => {
       setEstado(1)
       setultimoCheck(dayjs().format("HH:mm") + "hs")
-    },(err)=>{
+    }, (err) => {
       setEstado(0)
       setultimoCheck(dayjs().format("HH:mm") + "hs")
     })
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData()
-    if(intControl === null){
+    if (intControl === null) {
       setIntControl(setInterval(() => {
         fetchData()
       }, INTERVAL))
     }
-  },[])
+  }, [])
 
   return (
     <Card>
-        <CardContent>
-          <Typography variant="body-md">Conexion</Typography>
-          {estado !== null &&(
+      <CardContent>
+        <Typography variant="body-md">Conexion</Typography>
+        {estado !== null && (
           <Typography variant="p"
             sx={{
-              padding:"10px",
-              margin:"10px",
-              backgroundColor:( estado ? "#01E401" : "#FF0033"),
-              color:"#fff",
-              borderRadius:"5px"
+              padding: "10px",
+              margin: "10px",
+              backgroundColor: (estado ? "#01E401" : "#FF0033"),
+              color: "#fff",
+              borderRadius: "5px"
             }}
-            >{ estado ? "CONECTADO": "SIN CONEXION" } 
+          >{estado ? "CONECTADO" : "SIN CONEXION"}
             <Typography sx={{
-              margin:"0 10px"
+              margin: "0 10px"
             }}
-            variant='span'>
-            {ultimoCheck}
+              variant='span'>
+              {ultimoCheck}
             </Typography>
           </Typography>
-          )}
-        </CardContent>
-    </Card> 
+        )}
+      </CardContent>
+    </Card>
   );
 }

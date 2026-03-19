@@ -236,7 +236,8 @@ const SoldProductItem = ({
                 fontSize: "15px",
                 textAlign: "center",
                 marginLeft: "33%",
-                padding: "16.5px 0"
+                padding: "16.5px 2px",
+                overflow: "hidden"
               }}
                 onClick={() => {
                   if (!product.isEnvase) prepareTecladoChangeQuantity()
@@ -379,6 +380,17 @@ const SoldProductItem = ({
 
 
           {product.description}
+
+          {product.idProducto ? (
+            <Typography sx={{
+              color: "#828282",
+              fontSize: 13
+            }}>
+              Cod:{product.idProducto}
+            </Typography>
+          ) : (null)}
+
+
 
           {product.tieneExtraAgregar() && (
             <Typography>

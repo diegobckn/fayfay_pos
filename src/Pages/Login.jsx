@@ -47,6 +47,7 @@ import EstadosPedidosApp from "../definitions/EstadosPedidosApp";
 import ModosTrabajoConexion from "../definitions/ModosConexion";
 import ReconectarBalanza from "../Components/ScreenDialog/ReconectarBalanza";
 import Balanza from "../Models/Balanza";
+import Conexion from "../Models/Conexion";
 
 const Login = () => {
   const {
@@ -325,15 +326,14 @@ const Login = () => {
         return
       }
 
-
       // Actualizar userData después del inicio de sesión exitoso
       updateUserData(info.responseUsuario);
 
-
-
-      OfflineAutoIncrement.saveIfNotHasInSesion(info.responseUsuario)
+      OfflineAutoIncrement.saveInSesion(info.responseUsuario)
+      // OfflineAutoIncrement.saveIfNotHasInSesion(info.responseUsuario)
       UsersOffline.add({ ...info.responseUsuario, clave: password })
 
+      Conexion.resetEstadoConexiones()
       // Redirigir a la página de inicio
       if (ModelConfig.get("afterLogin") == TiposPasarela.PREVENTA) {
         navigate("/pre-venta");

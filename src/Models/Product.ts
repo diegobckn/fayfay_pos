@@ -86,9 +86,9 @@ class Product extends ModelSingleton {
     }
 
     async almacenarParaOffline(callbackOk: any, callbackWrong: any) {
-        console.log("almacenarParaOffline")
+        // console.log("almacenarParaOffline")
         var me = this
-        console.log("me.sesion", me.sesion)
+        // console.log("me.sesion", me.sesion)
         this.getAll((prods: any, resp: any) => {
             me.sesion.guardar({
                 id: 1,
@@ -305,7 +305,7 @@ class Product extends ModelSingleton {
 
         if (!codigoCliente && Client.getInstance().sesion.hasOne()) {
             const clt = Client.getInstance().getFromSesion()
-            console.log("clt", clt)
+            // console.log("clt", clt)
             codigoCliente = clt.codigoCliente
         }
         if (codigoCliente) {
@@ -521,6 +521,7 @@ class Product extends ModelSingleton {
 
         if (!product.codigoSucursal) product.codigoSucursal = ModelConfig.get("sucursal")
         if (!product.puntoVenta) product.puntoVenta = ModelConfig.get("puntoVenta")
+        if (!product.codbarra && product.idProducto) product.codbarra = product.idProducto
 
         EndPoint.sendPut(url, product, (responseData: any, response: any) => {
             callbackOk(responseData, response);
@@ -616,7 +617,7 @@ class Product extends ModelSingleton {
             }
 
         } catch (error) {
-            console.error("Error fetching products:", error);
+            // console.error("Error fetching products:", error);
             callbackWrong(error)
         }
     }
@@ -663,10 +664,10 @@ class Product extends ModelSingleton {
     }
 
     static async getIngredientesExternos(prod: any, callbackOk: any, callbackWrong: any) {
-        console.log("buscando extras para ", prod)
+        // console.log("buscando extras para ", prod)
         var comSes = new StorageSesion("comercio")
         if (!comSes.hasOne()) {
-            console.log("no tiene configurado el comercio en el back")
+            // console.log("no tiene configurado el comercio en el back")
             callbackWrong("no tiene configurado el comercio en el back")
             return false
         }
@@ -689,10 +690,10 @@ class Product extends ModelSingleton {
     }
 
     static async getAgregadosExternos(prod: any, callbackOk: any, callbackWrong: any) {
-        console.log("buscando extras para ", prod)
+        // console.log("buscando extras para ", prod)
         var comSes = new StorageSesion("comercio")
         if (!comSes.hasOne()) {
-            console.log("no tiene configurado el comercio en el back")
+            // console.log("no tiene configurado el comercio en el back")
             callbackWrong("no tiene configurado el comercio en el back")
             return false
         }
@@ -717,7 +718,7 @@ class Product extends ModelSingleton {
                 }
             },
             (er: string) => {
-                console.log("cae por error")
+                // console.log("cae por error")
                 callbackWrong(er)
             }
         )

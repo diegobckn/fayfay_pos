@@ -40,6 +40,9 @@ import SalesOffline from "../../Models/SalesOffline";
 import Model from "../../Models/Model";
 
 import { ProviderModalesContext } from "../Context/ProviderModales";
+import Ofertas from "../../Models/Ofertas";
+import StorageSesion from "../../Helpers/StorageSesion";
+import Conexion from "../../Models/Conexion";
 
 export const SelectedOptionsContext = React.createContext();
 
@@ -87,7 +90,11 @@ export const SelectedOptionsProvider = ({ children }) => {
 
 
   const [sales, setSales] = useState(new ModelSales())
+  const [ofertas, setOfertas] = useState([])
   const [ultimoVuelto, setUltimoVuelto] = useState(null)
+  const [descuentos, setDescuentos] = useState(0)
+
+
 
   const [showDialogSelectClient, setShowDialogSelectClient] = useState(false)
   const [cliente, setCliente] = useState(null)
@@ -95,6 +102,7 @@ export const SelectedOptionsProvider = ({ children }) => {
   const [askLastSale, setAskLastSale] = useState(true)
 
   const [mayusTecladoProductos, setMayusTecladoProductos] = useState(false);
+  const [verBotonesPanel, setVerBotonesPanel] = useState(true);
 
   const searchInputRef = useRef(null)
 
@@ -141,8 +149,8 @@ export const SelectedOptionsProvider = ({ children }) => {
   const [ultimoFolioPreventa, setUltimoFolioPreventa] = useState("");
 
   const [tieneInternet, setTieneInternet] = useState(null);
-  const [conexionesOkInternet, setConexionesOkInternet] = useState(0);
-  const [conexionesMalInternet, setConexionesMalInternet] = useState(0);
+  // const [conexionesOkInternet, setConexionesOkInternet] = useState(0);
+  // const [conexionesMalInternet, setConexionesMalInternet] = useState(0);
 
   //mostrar un dialog con la animacion del cargando
   const setShowLoadingDialog = (value) => {
@@ -150,15 +158,19 @@ export const SelectedOptionsProvider = ({ children }) => {
   }
 
   const checkInternet = () => {
-    // console.log("checkInternet")
+    console.log("checkInternet")
 
     if (window.location.href.indexOf("espejo") === -1) {
-      Model.getConexion(() => {
+      Conexion.getFromServer(() => {
         setTieneInternet(true)
-        setConexionesOkInternet((prev) => { return prev + 1 })
+
+        // console.log("getCorrects", Conexion.getCorrects())
+        // setConexionesOkInternet(Conexion.getCorrects())
+        // setConexionesOkInternet((prev) => { return prev + 1 })
       }, () => {
         setTieneInternet(false)
-        setConexionesMalInternet((prev) => { return prev + 1 })
+        // setConexionesOkInternet(Conexion.getInCorrects())
+        //     setConexionesMalInternet((prev) => { return prev + 1 })
       })
     }
   }
@@ -241,6 +253,15 @@ export const SelectedOptionsProvider = ({ children }) => {
   };
 
 
+
+  // const cargarOfertasCorrectas = () => {
+  //   console.log("cargarOfertasCorrectas")
+  //   Ofertas.cargarSoloCorrectas((ofers) => {
+  //     setOfertas(ofers)
+  //   })
+  // }
+
+
   useEffect(() => {
 
     if (productoSinPeso) {
@@ -266,9 +287,7 @@ export const SelectedOptionsProvider = ({ children }) => {
     setGrandTotal(sales.getTotal() + 0);
     if (tieneInternet === null) {
       checkInternet()
-      setInterval(() => {
-        checkInternet()
-      }, 10 * 1000);
+      setInterval(checkInternet, 10 * 1000);
     }
   }, [salesData]);
 
@@ -292,10 +311,12 @@ export const SelectedOptionsProvider = ({ children }) => {
     if (clientStatic.sesion.hasOne()) {
       setCliente(clientStatic.getFromSesion())
     }
+
+    // cargarOfertasCorrectas()
   }, []);
 
   useEffect(() => {
-    console.log("cliente", cliente)
+    // console.log("cliente", cliente)
     setClienteModal(null)
     if (cliente) {
       if (cliente.validacionFactura && cliente.validacionFactura.esValidoFactura) {
@@ -486,6 +507,7 @@ export const SelectedOptionsProvider = ({ children }) => {
     setSalesData([]);
     sales.products = [];
     sales.sesionProducts.truncate()
+    setDescuentos(0)
     setGrandTotal(0);
     setTimeout(() => {
       setSalesDataTimestamp(Date.now());
@@ -669,12 +691,22 @@ export const SelectedOptionsProvider = ({ children }) => {
         setListSalesOffline,
 
         tieneInternet,
-        conexionesOkInternet,
-        conexionesMalInternet,
+        // conexionesOkInternet,
+        // conexionesMalInternet,
 
         createQrString,
         ultimoFolioPreventa,
-        setUltimoFolioPreventa
+        setUltimoFolioPreventa,
+
+        // ofertas,
+        // setOfertas,
+        // cargarOfertasCorrectas,
+
+        descuentos,
+        setDescuentos,
+
+        verBotonesPanel,
+        setVerBotonesPanel
       }}
     >
       {children}
